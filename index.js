@@ -57,6 +57,25 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
+  if(body.name === undefined || body.name === ""){
+    response.send(
+      `<p> error: the name has not been defined or does not exist </p>`
+    )
+    return response.status(400).end()
+  }
+  if(body.number === undefined || body.number === ""){
+    response.send(
+      `<p> error: the number has not been defined or does not exist </p>`
+    )
+    return response.status(400).end()
+  }
+  let persona = persons.filter(person => person.name === body.name)
+  if(persona.name === undefined){
+    response.send(
+      `<p> error: 'name must be unique' </p>`
+    )
+    return response.status(400).end()
+  }
   const id = persons.length >0 
     ? Math.max(...persons.map( person => person.id)) +1
     : 0
